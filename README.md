@@ -69,20 +69,59 @@ YYYY-MM-DD-[一句话描述].md
 
 ---
 
-## 安装方法
+### 3. prompt-transform — 口语化指令转结构化 Prompt
 
-### 方式一：复制到 Skills 目录
+将随意的口语化指令转换为结构化、高效的提示词，严格保持原意。
 
-```bash
-# Claude Code 的 skills 目录
-cp -r diary 经历库 ~/.claude/skills/
+**触发方式：**
+
+- 输入 `/prompt-transform`
+- 说"转换提示词"、"优化prompt"、"帮我写个更好的prompt"
+
+**核心功能：**
+
+用户输入口语化指令（如"帮我写篇文章"），自动转换为结构化 prompt（添加角色、约束、格式等），提升 AI 输出质量。
+
+**保义第一，增强第二。** 转换后的 prompt 严格维持用户原意，只做结构化重排和显式化。
+
+**5 步转换流程：**
+
+1. 意图识别（任务类型 + 领域）
+2. 实体提取（角色、任务、格式、约束）
+3. 模糊检测（三级模糊度处理）
+4. 结构化组装（标准模板）
+5. 保义校验（确保不偏离原意）
+
+**A/B 测试结果：**
+
+| 指标 | 数值 |
+|------|------|
+| 测试用例 | 15 个（7 类任务） |
+| A 组均分（口语化） | 2.83 / 5.0 |
+| B 组均分（结构化） | 4.93 / 5.0 |
+| **平均提升** | **+2.10 分（+74%）** |
+
+**按任务类型：**
+
+| 任务类型 | 平均提升 |
+|---------|---------|
+| 代码生成 | +2.27（+106%） |
+| 分析推理 | +2.47（+101%） |
+| 创意生成 | +2.00（+70%） |
+| 规划决策 | +1.93（+63%） |
+| 理解转换 | +1.80（+68%） |
+
+**安装：**
+
+1. 将 `skill/` 目录复制到 `~/.claude/skills/prompt-transform/`
+2. 重启 Claude Code
+3. 使用 `/prompt-transform` 触发
+
+**使用示例：**
+
 ```
-
-重启 Claude Code 后即可通过 `/diary` 或 `/经历库` 调用。
-
-### 方式二：项目内使用（推荐）
-
-将本仓库中的 Skill 目录复制到你的项目 `.claude/skills/` 下，仅在该项目生效。
+/prompt-transform 帮我写篇文章
+```
 
 ---
 
@@ -93,9 +132,34 @@ cp -r diary 经历库 ~/.claude/skills/
 ├── README.md
 ├── diary/
 │   └── SKILL.md          # 日记引导 Skill
-└── 经历库/
-    └── SKILL.md          # 经历库 Skill
+├── 经历库/
+│   └── SKILL.md          # 经历库 Skill
+├── skill/                 # prompt-transform Skill
+│   ├── SKILL.md
+│   └── references/
+├── docs/                  # 研究文档
+│   ├── effective-prompt-guide.md
+│   ├── prompt-engineering-deep-research.md
+│   ├── conversion-rules.md
+│   └── examples/
+└── tests/                 # 测试用例与结果
+    ├── cases/
+    └── results/
 ```
+
+## 安装方法
+
+### 方式一：复制到 Skills 目录
+
+```bash
+cp -r diary 经历库 skill ~/.claude/skills/
+```
+
+重启 Claude Code 后即可通过 `/diary`、`/经历库`、`/prompt-transform` 调用。
+
+### 方式二：项目内使用（推荐）
+
+将本仓库中的 Skill 目录复制到你的项目 `.claude/skills/` 下，仅在该项目生效。
 
 ---
 
